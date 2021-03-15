@@ -11,17 +11,13 @@ CONNECTION_PROPS = {
     },
 }
 
-# MEDIUM_CONNECTION_PROPS = {
-#     "host": "10.0.1.8",
-#      "connect_kwargs": {
-#         "key_filename": "thinkvalAzure.pem"
-#     },
-# }
-
-connections = ["ubuntu@10.0.1.19", "ubuntu@10.0.1.22","ubuntu@10.0.1.23", "ubuntu@10.0.1.24"]
+# connections = ["ubuntu@10.0.1.19", "ubuntu@10.0.1.22","ubuntu@10.0.1.23", "ubuntu@10.0.1.24"]
 # connections = ["ubuntu@10.0.1.19", "ubuntu@10.0.1.22","ubuntu@10.0.1.23", "ubuntu@10.0.1.24", "ubuntu@10.0.1.20", "ubuntu@10.0.1.21"]
 # connections = ["ubuntu@10.0.1.19", "ubuntu@10.0.1.22"]
-filesToExtract = ["calculateRuntime", "perspectiveRuntime", "queryProcessor"]
+connections  = ["ubuntu@10.0.1.16", "ubuntu@10.0.1.17","ubuntu@10.0.1.18","ubuntu@10.0.1.27"]
+# connections  = ["ubuntu@10.0.1.16", "ubuntu@10.0.1.17"]
+filesToExtract = ["calculateRuntime", "perspectiveRuntime", "queryProcessor", "integration-external-data"]
+# filesToExtract = ["integration-external-data"]
 
 def extractLogsFromWorkers(c):
     index = 1
@@ -31,16 +27,16 @@ def extractLogsFromWorkers(c):
         print(f'{sftpcon} is connected? {sftpcon.is_connected}')
         
         for logToExtract in filesToExtract:
-            fileToRetrieve = f'/opt/apps/logs/val-services/{logToExtract}.{today.strftime("%Y-%m-%d")}.json'
-            # fileToRetrieve = f'/opt/apps/logs/val-services/calculateRuntime.2021-02-08.json'
-            # print(f'{fileToRetrieve} , {index}')
+            # fileToRetrieve = f'/opt/apps/logs/val-services-sod/{logToExtract}.{today.strftime("%Y-%m-%d")}.json'
+            fileToRetrieve = f'/opt/apps/logs/val-services-sod/{logToExtract}.{today.strftime("%Y-%m-%d")}.json'
             # retrieve file
             try:
-                sftpcon.get(fileToRetrieve, f'workers/worker{index}/{logToExtract}.json')
+                # sftpcon.get(fileToRetrieve, f'workers/worker{index}/{logToExtract}.json')
+                sftpcon.get(fileToRetrieve, f'dailyLogs/worker{index}.{logToExtract}.json')
                 print(f'Retrived to locate {fileToRetrieve} in worker{index}')
             except:
                 print(f'Unable to locate {fileToRetrieve} in worker{index}')
-                continue
+                continue 
         
         index += 1
 
